@@ -6,10 +6,8 @@ def webServer(port=13331):
    serverSocket = socket(AF_INET, SOCK_STREAM)
 
    #Prepare a sever socket
-   #Fill in start
    serverSocket.bind(("192.168.1.18",13331))
    serverSocket.listen()
-   #Fill in end
 
    while True:
        #Establish the connection
