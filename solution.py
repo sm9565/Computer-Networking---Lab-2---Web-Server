@@ -2,48 +2,48 @@
 from socket import *
 import sys  # In order to terminate the program
 
-host = "127.0.0.1"
-port = 13331
-
 
 def webServer(port=13331):
     serverSocket = socket(AF_INET, SOCK_STREAM)
 
     # Prepare a sever socket
     # Fill in start
-    serverSocket.bind((host, port))
-    serverSocket.listen()
+    host = '127.0.0.1'
+    address = (host, port)
+
+    serverSocket.bind(address)
+    serverSocket.listen(1)
     # Fill in end
 
     while True:
         # Establish the connection
         print('Ready to serve...')
         connectionSocket, addr = serverSocket.accept()
-
         try:
-            message = connectionSocket.recv(2048)
+            message = connectionSocket.recv(1024)
             filename = message.split()[1]
             f = open(filename[1:])
-            outputdata = f.read()
+            od = f.read()
 
-            # Send one HTTP header line into socket
+
             # Fill in start
-            connectionSocket.send("HTTP/1.1 200 OK\r\n".encode("utf-8"))
+            connectionSocket.send('\nHTTP/1.1 200 OK\n'.encode('utf-8'))
             # Fill in end
 
-            # Send the content of the requested file to the client
-            for i in range(0, len(outputdata)):
-                connectionSocket.send(outputdata[i].encode())
-                connectionSocket.send("\r\n".encode())
-                connectionSocket.close()
-        except IOError:
-            # Send response message for file not found (404)
-            connectionSocket.send("404: File Not Found\r\n".encode("utf-8"))
-            # Close client socket
-            connectionSocket.close()
+            for i in range(0, len(od)):
+                connectionSocket.send(od[i].encode())
 
-        serverSocket.close()
-        sys.exit()  # Terminate the program after sending the corresponding data
+            connectionSocket.send("\r\n".encode())
+            connectionSocket.close()
+        except IOError:
+
+            connectionSocket.send('\nHTTP/1.1 404 not found\n'.encode('utf-8'))
+
+            connectionSocket.close()
+            # Fill in end
+
+    serverSocket.close()
+    sys.exit()  # Terminate the program after sending the corresponding data
 
 
 if __name__ == "__main__":
