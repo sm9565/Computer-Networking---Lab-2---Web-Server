@@ -27,7 +27,7 @@ def webServer(port=13331):
 
 
             # Fill in start
-            connectionSocket.send('\nHTTP/1.1 200 OK\n'.encode('utf-8'))
+            connectionSocket.send('\nHTTP/1.1 200 OK\n'.encode())
             # Fill in end
 
             for i in range(0, len(od)):
@@ -37,7 +37,7 @@ def webServer(port=13331):
             connectionSocket.close()
         except IOError:
 
-            connectionSocket.send('\nHTTP/1.1 404 not found\n'.encode('utf-8'))
+            connectionSocket.send('\nHTTP/1.1 404 not found\n'.encode())
 
             connectionSocket.close()
             # Fill in end
